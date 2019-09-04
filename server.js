@@ -13,7 +13,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 //define Router
 app.use('/api/users', require('./routers/users/users'));
-// app.use('/api/booking', require('./routers/booking/booking'))
+app.use('/api/booking', require('./routers/booking/booking'))
 
 
 app.get('/', (req,res) => {
