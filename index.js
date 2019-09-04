@@ -18,5 +18,5 @@ app.use('/api/booking', require('./routers/booking/booking'))
 
 app.get('/', (req,res) => {
     
-    res.send('Hello');
+    res.send('Welcome Server of Duy handsome');
 });
