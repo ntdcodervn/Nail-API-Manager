@@ -56,7 +56,7 @@ router.post('/booking',auth,[
 
 router.get('/getAllBook',auth,async (req,res) => {
     try {
-        let getAllBook = await booking.find().populate('services',['idNumber','price']);
+        let getAllBook = await booking.find().populate('slots','slotName').select();
         res.json({listBooking : getAllBook})
     } catch (error) {
         console.log(error);

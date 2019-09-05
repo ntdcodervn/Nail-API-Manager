@@ -267,6 +267,15 @@ const tests = require('./../../models/tests');
 
 router.get('/getTests', async (req,res) => {
       res.json(await tests.find().populate('users','email').select());
+});
+
+router.get('/getDataUser', auth , async (req,res) => {
+    try {
+      res.json(await USER.findById(req.id).select('-password'));
+    } catch (error) {
+      console.log(error);
+      res.json({msg : 'Server error'});
+    }
 })
 
 
