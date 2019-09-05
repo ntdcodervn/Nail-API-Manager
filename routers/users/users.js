@@ -113,14 +113,19 @@ router.post('/signIn',[
       
       try {
         let userCheck = await USER.findOne({email});
+        console.log(userCheck);
+        if(userCheck === null)
+        {
+          return res.json({ errors: [{msg : 'Wrong email or password'}] });
+          
+         
+        }
+        if(!bcrypt.compareSync(password, userCheck.password))
+          {
+            return res.json({ errors: [{msg : 'Wrong email or password'}] });
+            
+          }
      
-     
-
-      if(!bcrypt.compareSync(password, userCheck.password))
-      {
-        return res.json({ errors: [{msg : 'Wrong email or password'}] });;
-        
-      }
 
       const payload = {
         id : userCheck.id

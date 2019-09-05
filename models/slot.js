@@ -2,12 +2,11 @@ const mongoose = require('mongoose');
 
 const Slot = new mongoose.Schema({
     slotName : {
-        type : 'String',
-        required : true
+        type : 'String'
     },
     date : {
-        type : 'Date',
-        required : true
+        type : 'Date'
+       
     },
     total : {
         type : 'Number',
@@ -16,4 +15,4 @@ const Slot = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model('slot', Slot);
+module.exports = mongoose.model('slots', Slot);

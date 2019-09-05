@@ -12,4 +12,4 @@ const Account = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('account',Account);
+module.exports = mongoose.model('accounts',Account);

@@ -1,0 +1,41 @@
+
+link web : https://nailapimanager.herokuapp.com
+
+@api/users/signUp
+    Params : {
+      email,
+      password,
+      firstName,
+      lastName
+    }
+
+
+@api/users/signIn
+    Params : {
+      email,
+      password
+    }
+
+@api/users/editAvatar
+    file : {
+      jpg, png
+    }
+
+
+@api/users/editName
+    param : {
+      firstName,
+      lastName
+    }
+
+
+@api/users/pluspoints
+    param : {
+      point : {
+        type : 'number'
+      }
+    }
+
+
+@api/users/getTop10User
+

@@ -9,13 +9,10 @@ const Booking = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'slot' 
     },
-    Service : [{
+    service : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'service'
     }],
-    dateOfBooking : {
-        type : 'Date'
-    },
     date : {
         type : 'Date',
         default : Date.now
@@ -27,4 +24,4 @@ const Booking = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('booking',Booking);
+module.exports = mongoose.model('bookings',Booking);
