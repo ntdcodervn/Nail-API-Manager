@@ -265,10 +265,13 @@ router.get('/getTop10User',auth, async (req,res) => {
 
 const tests = require('./../../models/tests');
 
-router.get('/getTests', async (req,res) => {
+router.get('/getTests',auth, async (req,res) => {
       res.json(await tests.find().populate('users','email').select());
 });
 
+/*
+    @api/users/getDataUser
+*/
 router.get('/getDataUser', auth , async (req,res) => {
     try {
       res.json(await USER.findById(req.id).select('-password'));

@@ -7,11 +7,11 @@ const Booking = new mongoose.Schema({
     },
     slot : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'slot' 
+        ref : 'slots' 
     },
     service : [{
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'service'
+        ref : 'services'
     }],
     date : {
         type : 'Date',

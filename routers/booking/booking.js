@@ -4,9 +4,9 @@ const auth = require('./../../middleware/auth');
 const {check,validationResult} = require('express-validator');
 const moment = require('moment');
 const mongoose = require('mongoose');
-const booking = require('./../../models/booking');
-const slot = require('./../../models/slot');
-const service = require('./../../models/service')
+const booking = require('../../models/bookings');
+const slots = require('../../models/slots');
+const service = require('../../models/services')
 
 router.post('/booking',auth,[
     check('idSlot','Slot is empty').not().isEmpty(),
@@ -24,7 +24,7 @@ router.post('/booking',auth,[
         let {idSlot , idService} = await req.body;
 
        
-        let totalSlot = await slot.findById(idSlot);
+        let totalSlot = await slots.findById(idSlot);
         if(totalSlot.total >= 2)
         {
             return res.json({msg : 'Slot is full'});
@@ -32,7 +32,7 @@ router.post('/booking',auth,[
         else
         {
             console.log(totalSlot)
-            let updateSlot = await slot.findByIdAndUpdate(idSlot,{total : totalSlot.total + 1});
+            let updateSlot = await slots.findByIdAndUpdate(idSlot,{total : totalSlot.total + 1});
             const bookingObj = new booking ({
                 users : req.id,
                 slot : idSlot,
@@ -56,7 +56,9 @@ router.post('/booking',auth,[
 
 router.get('/getAllBook',auth,async (req,res) => {
     try {
-        let getAllBook = await booking.find().populate('slots','slotName').select();
+        let getAllBook = await booking.find()
+        .populate('users',['email','name','coupons','point'])
+        .populate('users','password').exec();
         res.json({listBooking : getAllBook})
     } catch (error) {
         console.log(error);
