@@ -14,7 +14,7 @@ router.post('/updateCart', auth , async (req,res) => {
         {
             console.log(cartObj + idService)
             let createCart = new carts({
-                services : [],
+                services : [idService],
                 users : req.id
             });
             createCart.save();
