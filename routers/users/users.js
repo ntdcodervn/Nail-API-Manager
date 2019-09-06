@@ -71,7 +71,7 @@ async (req,res) => {
           email,
           password : hashPass,
           name,
-          avatar : '',
+          avatar : 'uploads/avatar-default.jpg',
           point : 0
       });
       
