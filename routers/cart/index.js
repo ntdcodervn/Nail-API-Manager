@@ -47,7 +47,7 @@ router.post('/updateCart', auth , async (req,res) => {
 
 router.get('/getCartByIdUser',auth,async (req,res) => {
     try {
-        const cart = await carts.findOne({users : req.id});
+        const cart = await carts.findOne({users : req.id}).populate('services').populate('users');
 
         res.json({cart});
 
