@@ -47,11 +47,11 @@ router.post('/updateCart', auth , async (req,res) => {
 
 router.get('/getCartByIdUser',auth,async (req,res) => {
     try {
-        const cart = await carts.findById(req.id);
+        const cart = await carts.findOne({users : req.id});
 
         res.json({cart});
 
-
+ 
     } catch (error) {
         console.log(error);
         res.status(501).json({msg : 'server error'});
