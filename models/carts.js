@@ -3,12 +3,14 @@ const Cart = new mongoose.Schema({
     services : [
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref : 'service'
+            ref : 'services'
         }
     ],
     users : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'users'
+        ref : 'users',
+        unique : true,
+        required : true
     }
 });
 

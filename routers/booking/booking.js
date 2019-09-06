@@ -35,8 +35,8 @@ router.post('/booking',auth,[
             let updateSlot = await slots.findByIdAndUpdate(idSlot,{total : totalSlot.total + 1});
             const bookingObj = new booking ({
                 users : req.id,
-                slot : idSlot,
-                service : idService,
+                slots : idSlot,
+                services : idService,
             })
             bookingObj.save();
             return res.json({msg : 'Booking succesful by user id ' + req.id});
@@ -54,11 +54,26 @@ router.post('/booking',auth,[
         
 });
 
-router.get('/getAllBook',auth,async (req,res) => {
+router.get('/getAllBook',auth,[
+    check('page', 'Page is not empty').not().isEmpty(),
+    check('page', 'Page is number').isNumeric(),
+],async (req,res) => {
+    const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+       
+        return res.json({ errors: errors.array() });
+      }
     try {
+        const page = req.query.page;
+        if(page < 0)
+        {
+            return res.json({errors: [{msg : 'Page must be greater than or equal to 0 '}]});
+        }
+        
         let getAllBook = await booking.find()
-        .populate('users',['email','name','coupons','point'])
-        .populate('users','password').exec();
+        .populate('users',['email','name','coupons','point','avatar'])
+        .populate('services')
+        .populate('slots').limit(10).skip(10*page).exec();
         res.json({listBooking : getAllBook})
     } catch (error) {
         console.log(error);

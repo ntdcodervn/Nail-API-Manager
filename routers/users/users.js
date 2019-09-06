@@ -281,6 +281,39 @@ router.get('/getDataUser', auth , async (req,res) => {
     }
 })
 
+/*
+    @api/users/getDataUser
+*/
+router.get('/getAllUser', auth,[
+  check('page', 'Page is not empty').not().isEmpty(),
+  check('page', 'Page is number').isNumeric(),
+] , async (req,res) => {
+  const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+       
+        return res.json({ errors: errors.array() });
+      }
+
+  try {
+    const page = req.query.page;
+    if(page < 0)
+    {
+        return res.json({errors: [{msg : 'Page must be greater than or equal to 0 '}]});
+    }
+    let userObj=await USER.findById(req.id).select('role');
+    if(userObj.role === 'admin')
+    {
+      let AllUser = await USER.find().limit(10).skip(10*page).select('-password');
+      res.json({listUser : AllUser});
+    }else{
+      res.json({msg : 'You do not have access to this API'});
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({msg : 'Server error'});
+  }
+})
+
 
 
 

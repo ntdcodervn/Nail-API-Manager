@@ -1,7 +1,9 @@
 
 link web : https://nailapimanager.herokuapp.com
 
+API User
 @api/users/signUp
+    method : POST
     Params : {
       email,
       password,
@@ -11,18 +13,23 @@ link web : https://nailapimanager.herokuapp.com
 
 
 @api/users/signIn
+    method : POST
     Params : {
       email,
       password
     }
 
 @api/users/editAvatar
+    header : x-auth-token
+    method : POST
     file : {
       jpg, png
     }
 
 
 @api/users/editName
+    header : x-auth-token
+    method : POST
     param : {
       firstName,
       lastName
@@ -30,6 +37,8 @@ link web : https://nailapimanager.herokuapp.com
 
 
 @api/users/pluspoints
+    header : x-auth-token
+    method : POST
     param : {
       point : {
         type : 'number'
@@ -38,4 +47,17 @@ link web : https://nailapimanager.herokuapp.com
 
 
 @api/users/getTop10User
+  header : x-auth-token
+  method : GET
 
+
+@api/users/getDataUser
+  header : x-auth-token
+  method : GET
+
+
+
+API Booking 
+@api/booking/getAllBook
+  header : x-auth-token
+  method : GET
