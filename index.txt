@@ -1,7 +1,7 @@
 
 link web : https://nailapimanager.herokuapp.com
 
-API User
+--API User
 @api/users/signUp
     method : POST
     Params : {
@@ -51,13 +51,30 @@ API User
   method : GET
 
 
-@api/users/getDataUser
+/getDataUser
   header : x-auth-token
   method : GET
 
 
 
-API Booking 
+--API Booking 
 @api/booking/getAllBook
   header : x-auth-token
   method : GET
+@api/booking/booking
+  header : x-auth-token
+  method : POST
+  param : {
+    idSlot,
+    idService (Array),
+  }
+
+
+--API Cart 
+@api/cart/getCartByIdUser
+  header : x-auth-token
+  method : GET
+
+@api/cart/updateCart
+  header : x-auth-token
+  method : POST
