@@ -105,7 +105,7 @@ router.post('/signIn',[
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
        
-        return res.json({ errors: errors.array() });
+        return res.json({ errors: errors.array()});
       }
 
       const {email,password} = req.body;
@@ -128,7 +128,8 @@ router.post('/signIn',[
      
 
       const payload = {
-        id : userCheck.id
+        id : userCheck.id,
+        role : userCheck.role
       }
 
       jwt.sign(
@@ -295,13 +296,14 @@ router.get('/getAllUser', auth,[
       }
 
   try {
+    
     const page = req.query.page;
     if(page < 0)
     {
         return res.json({errors: [{msg : 'Page must be greater than or equal to 0 '}]});
     }
-    let userObj=await USER.findById(req.id).select('role');
-    if(userObj.role === 'admin')
+   
+    if(req.role === 'admin')
     {
       let AllUser = await USER.find().limit(10).skip(10*page).select('-password');
       res.json({listUser : AllUser});

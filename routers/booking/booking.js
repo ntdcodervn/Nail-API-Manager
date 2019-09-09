@@ -6,7 +6,8 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 const booking = require('../../models/bookings');
 const slots = require('../../models/slots');
-const service = require('../../models/services')
+const service = require('../../models/services');
+
 
 router.post('/booking',auth,[
     check('idSlot','Slot is empty').not().isEmpty(),
@@ -33,13 +34,21 @@ router.post('/booking',auth,[
         {
             console.log(totalSlot)
             let updateSlot = await slots.findByIdAndUpdate(idSlot,{total : totalSlot.total + 1});
-            const bookingObj = new booking ({
-                users : req.id,
-                slots : idSlot,
-                services : idService,
-            })
-            bookingObj.save();
-            return res.json({msg : 'Booking succesful by user id ' + req.id});
+            let bookingCheckUserAvaiable = await booking.findById(req.id);
+            if(bookingCheckUserAvaiable === null)
+            {
+                return res.json({msg : 'You have made a reservation, please wait to book more'});
+            }
+            else{
+                const bookingObj = new booking ({
+                    users : req.id,
+                    slots : idSlot,
+                    services : idService,
+                })
+                bookingObj.save();
+                return res.json({msg : 'Booking succesful by user id ' + req.id});
+            }
+            
         }
        
 

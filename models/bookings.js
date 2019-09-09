@@ -3,11 +3,14 @@ const mongoose = require('mongoose');
 const Booking = new mongoose.Schema({
     users : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'users'
+        ref : 'users',
+        unique : true,
+        required : true
     },
     slots : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'slots' 
+        ref : 'slots',
+        required : true
     },
     services : [{
         type : mongoose.Schema.Types.ObjectId,
