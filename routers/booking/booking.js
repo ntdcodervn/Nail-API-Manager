@@ -81,7 +81,7 @@ router.get('/getAllBook',auth,[
     }
 })
 
-router.get('getBooked',auth, async (req,res) => {
+router.get('/getBooked',auth, async (req,res) => {
     try {
         let booked = booking.find({users : req.id});
         res.json({booked});
