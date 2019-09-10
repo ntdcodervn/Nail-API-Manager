@@ -93,7 +93,14 @@ router.get('/getAllBook',auth,[
 router.get('/getBooked',auth, async (req,res) => {
     try {
         let booked = await booking.find({users : req.id}).populate('services').populate('slots',['slotName']);
-        res.json({booked});
+        let total = 0;
+        for(var i =0 ; i< booked.length ;i++)
+        {
+            await booked.services.forEach(value => {
+                total += value;
+            });
+        }
+        res.json({booked : [...booked,total]});
     } catch (error) {
         res.status(501).json({msg : 'server error'})
     }
