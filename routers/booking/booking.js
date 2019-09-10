@@ -96,7 +96,7 @@ router.get('/getBooked',auth, async (req,res) => {
         let total = 0;
         for(var i =0 ; i< booked.length ;i++)
         {
-            await booked.services.forEach(value => {
+            await booked[i].services.forEach(value => {
                 total += value;
             });
         }
