@@ -9,6 +9,11 @@ const Service = mongoose.Schema({
     price : {
         type : 'Number',
         required : true
+    },
+    time :{
+        type : 'Number',
+        require : true,
+        default : 60
     }
 
 })

@@ -49,14 +49,21 @@ router.post('/deleteProductInCart',auth, async (req,res) => {
     try {
         const idService = req.body.idService;
         let cartObj = await carts.findOne({users : req.id});
-        let updateCartList = await cartObj.services.map((value) => {
-            if(idService !== value)
-            {
-                return value;
-            }
+        let updateCartList = await cartObj.services.filter((value) => {
+            console.log(value)
+            return value != idService;
         })
-        console.log(updateCartList);
-        res.json({msg : 'adad'})
+       
+        let cartAfterUpdate = await carts.updateOne({users:req.id},{services : updateCartList});
+        if(cartAfterUpdate !== null)
+        {
+            res.json({msg : 'Delete successful'});
+        }
+        else{
+            res.json({msg : 'Delete falied'});
+        }
+        
+        
        
     } catch (error) {
         console.log(error);
