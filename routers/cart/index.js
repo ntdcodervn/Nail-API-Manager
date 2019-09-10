@@ -45,6 +45,26 @@ router.post('/updateCart', auth , async (req,res) => {
    
 });
 
+router.post('deleteProductInCart',auth, async (req,res) => {
+    try {
+        const idService = req.body.idService;
+        let cartObj = await carts.findOne({users : req.id});
+        let updateCartList = await cartObj.services.map((value) => {
+            if(idService !== value)
+            {
+                return value;
+            }
+        })
+        console.log(updateCartList);
+        res.json({msg : 'adad'})
+       
+    } catch (error) {
+        console.log(error);
+        res.status(501).json({msg : 'Server error'});
+    }
+   
+})
+
 router.get('/getCartByIdUser',auth,async (req,res) => {
     try {
         const cart = await carts.findOne({users : req.id}).populate('services');

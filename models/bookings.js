@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const Booking = new mongoose.Schema({
     users : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'users',
-        required : true
+        ref : 'users'
     },
     slots : {
         type : mongoose.Schema.Types.ObjectId,
