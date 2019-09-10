@@ -45,7 +45,7 @@ router.post('/updateCart', auth , async (req,res) => {
    
 });
 
-router.post('deleteProductInCart',auth, async (req,res) => {
+router.post('/deleteProductInCart',auth, async (req,res) => {
     try {
         const idService = req.body.idService;
         let cartObj = await carts.findOne({users : req.id});
