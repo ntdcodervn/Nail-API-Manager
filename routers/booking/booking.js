@@ -12,9 +12,6 @@ const service = require('../../models/services');
 router.post('/booking',auth,[
     check('idSlot','Slot is empty').not().isEmpty(),
     check('idService','Service is not array').isArray(),
-    
-    
-    
 ],async (req,res) => {
     const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -32,28 +29,37 @@ router.post('/booking',auth,[
         }
         else
         {
-            console.log(totalSlot)
-            let updateSlot = await slots.findByIdAndUpdate(idSlot,{total : totalSlot.total + 1});
             let bookingCheckUserAvaiable = await booking.findOne({users:req.id});
-            console.log(bookingCheckUserAvaiable);
-            if(bookingCheckUserAvaiable !== null)
-            {
-                return res.json({msg : 'You have made a reservation, please wait to book more'});
-            }
-            else{
-                let total = 0;
-                await idService.forEach(element => {
-                    total += element.price
-                });
-                const bookingObj = new booking ({
-                    users : req.id,
-                    slots : idSlot,
-                    services : idService,
-                    total : total
-                })
-                bookingObj.save();
-                return res.json({msg : 'Booking succesful by user id ' + req.id});
-            }
+           
+                if(bookingCheckUserAvaiable.status !== 0)
+                {
+                    console.log(totalSlot)
+                    let updateSlot = await slots.findByIdAndUpdate(idSlot,{total : totalSlot.total + 1});
+                    console.log(idService);
+                    let total = 0;
+                    for(var i =0;i<idService.length;i++)
+                    {
+                        let price = await service.findById(idService[0]);
+                        total += price.price;
+                    }
+                    console.log(total);
+                    const bookingObj = await new booking ({
+                        users : req.id,
+                        slots : idSlot,
+                        services : idService,
+                        total : total
+                    });
+                    bookingObj.save();
+                    return res.json({msg : 'Booking succesful by user id ' + req.id});
+                    
+                }
+                else{
+                    return res.json({msg : 'You have made a reservation, please wait to book more'});
+                }
+
+               
+            
+            
             
         }
        
