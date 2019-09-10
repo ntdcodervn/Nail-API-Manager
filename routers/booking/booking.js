@@ -34,16 +34,21 @@ router.post('/booking',auth,[
         {
             console.log(totalSlot)
             let updateSlot = await slots.findByIdAndUpdate(idSlot,{total : totalSlot.total + 1});
-            let bookingCheckUserAvaiable = await booking.findById(req.id);
+            let bookingCheckUserAvaiable = await booking.findOne({users:req.id});
             if(bookingCheckUserAvaiable === null)
             {
                 return res.json({msg : 'You have made a reservation, please wait to book more'});
             }
             else{
+                let total = 0;
+                await idService.forEach(element => {
+                    total += element.price
+                });
                 const bookingObj = new booking ({
                     users : req.id,
                     slots : idSlot,
                     services : idService,
+                    total : total
                 })
                 bookingObj.save();
                 return res.json({msg : 'Booking succesful by user id ' + req.id});
@@ -93,14 +98,9 @@ router.get('/getAllBook',auth,[
 router.get('/getBooked',auth, async (req,res) => {
     try {
         let booked = await booking.find({users : req.id}).populate('services').populate('slots',['slotName']);
-        let total = 0;
-        for(var i =0 ; i< booked.length ;i++)
-        {
-            await booked[i].services.forEach(value => {
-                total += value;
-            });
-        }
-        res.json({booked : [...booked,total]});
+       
+   
+            res.json({booked});
     } catch (error) {
         res.status(501).json({msg : 'server error'})
     }
