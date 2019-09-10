@@ -117,8 +117,6 @@ router.post('/signIn',[
         if(userCheck === null)
         {
           return res.json({ errors: [{msg : 'Wrong email or password'}] });
-          
-         
         }
         if(!bcrypt.compareSync(password, userCheck.password))
           {

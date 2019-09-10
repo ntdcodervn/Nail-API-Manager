@@ -51,7 +51,7 @@ link web : https://nailapimanager.herokuapp.com
   method : GET
 
 
-/getDataUser
+@getDataUser
   header : x-auth-token
   method : GET
 
