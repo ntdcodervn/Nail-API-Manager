@@ -30,44 +30,44 @@ router.post('/booking',auth,[
         else
         {
             let bookingCheckUserAvaiable = await booking.findOne({users:req.id});
-           
+            
                 if(bookingCheckUserAvaiable.status !== 0)
                 {
                     console.log(totalSlot)
                     let updateSlot = await slots.findByIdAndUpdate(idSlot,{total : totalSlot.total + 1});
                     console.log(idService);
                     let total = 0;
+                    let time = 0;
                     for(var i =0;i<idService.length;i++)
                     {
                         let price = await service.findById(idService[0]);
                         total += price.price;
+                        time += price.time;
                     }
-                    console.log(total);
-                    const bookingObj = await new booking ({
+                    if(time > 120)
+                    {
+                        console.log(total);
+                        const bookingObj = await new booking ({
                         users : req.id,
                         slots : idSlot,
                         services : idService,
                         total : total
-                    });
-                    bookingObj.save();
-                    return res.json({msg : 'Booking succesful by user id ' + req.id});
+                        });
+                        bookingObj.save();
+                        return res.json({msg : 'Booking succesfull by user id ' + req.id});
+                    }
+                    else{
+                        return res.json({msg : 'you must book services in about 120 min' + req.id});
+                    }
+                    
+                    
                     
                 }
                 else{
                     return res.json({msg : 'You have made a reservation, please wait to book more'});
                 }
-
-               
-            
-            
-            
         }
-       
-
-  
-       
-        
-  
+    
       } catch (error) {
           console.log(error)
           res.status(501).json({msg : 'Server error'})
@@ -82,7 +82,7 @@ router.get('/getAllBook',auth,[
     const errors = validationResult(req);
       if (!errors.isEmpty()) {
        
-        return res.json({ errors: errors.array() });
+        return res.json({errors: errors.array()});
       }
     try {
         const page = req.query.page;
@@ -95,7 +95,7 @@ router.get('/getAllBook',auth,[
         .populate('users',['email','name','coupons','point','avatar'])
         .populate('services')
         .populate('slots').limit(10).skip(10*page).exec();
-        res.json({listBooking : getAllBook})
+        res.json({listBooking : getAllBook});
     } catch (error) {
         console.log(error);
         res.status(501).json('Server error')
@@ -105,11 +105,10 @@ router.get('/getAllBook',auth,[
 router.get('/getBooked',auth, async (req,res) => {
     try {
         let booked = await booking.find({users : req.id}).populate('services').populate('slots',['slotName']);
-       
-   
-            res.json({booked});
+        
+        res.json({booked});
     } catch (error) {
-        res.status(501).json({msg : 'server error'})
+        res.status(501).json({msg : 'server error'});
     }
 })
 
