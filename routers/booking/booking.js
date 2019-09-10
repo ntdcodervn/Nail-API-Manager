@@ -36,7 +36,7 @@ router.post('/booking',auth,[
             let updateSlot = await slots.findByIdAndUpdate(idSlot,{total : totalSlot.total + 1});
             let bookingCheckUserAvaiable = await booking.findOne({users:req.id});
             console.log(bookingCheckUserAvaiable);
-            if(bookingCheckUserAvaiable === null)
+            if(bookingCheckUserAvaiable !== null)
             {
                 return res.json({msg : 'You have made a reservation, please wait to book more'});
             }
