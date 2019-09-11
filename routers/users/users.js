@@ -303,7 +303,7 @@ router.get('/getAllUser', auth,[
    
     if(req.role === 'admin')
     {
-      let AllUser = await USER.find().limit(10).skip(10*page).select('-password');
+      let AllUser = await USER.find().limit(10).skip(10*page).sort({point : -1}).select('-password');
       res.json({listUser : AllUser});
     }else{
       res.json({msg : 'You do not have access to this API'});
