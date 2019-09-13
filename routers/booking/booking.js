@@ -12,7 +12,7 @@ const slots = require('../../models/slots');
 const service = require('../../models/services');
 const users = require('./../../models/users')
 const io = require('socket.io')();
-
+const carts = require('./../../models/carts');
 io.listen(3000);
 
 
@@ -95,7 +95,7 @@ router.post('/booking', auth, [
                         total: total
                     });
                     bookingObj.save();
-
+                    let deleteCart = await carts.deleteOne({users : req.id});
                     return res.json({
                         msg: 'Booking succesfull by user id ' + req.id
                     });
@@ -141,7 +141,7 @@ router.post('/booking', auth, [
                             total : total
                             });
                             bookingObj.save();
-                           
+                            let deleteCart = await carts.deleteOne({users : req.id});
                             return res.json({msg : 'Booking succesfull by user id ' + req.id});
                         }
                         else{
@@ -187,6 +187,7 @@ router.post('/booking', auth, [
                             total: total
                         });
                         bookingObj.save();
+                        let deleteCart = await carts.deleteOne({users : req.id});
                         return res.json({
                             msg: 'Booking succesfull by user id ' + req.id
                         });

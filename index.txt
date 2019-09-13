@@ -61,6 +61,20 @@ link web : https://nailapimanager.herokuapp.com
 @api/booking/getAllBook
   header : x-auth-token
   method : GET
+  role : Admin
+  khi slot đã dc tạo
+  param-1 : {
+            idSlot,
+            idService,
+            
+  }
+  khi slot chưa dc tạo
+  param-2 : {
+            date,
+            slotName,
+            idService,
+  }
+
 @api/booking/booking
   header : x-auth-token
   method : POST
@@ -68,6 +82,12 @@ link web : https://nailapimanager.herokuapp.com
     idSlot,
     idService (Array),
   }
+
+Real Time book 
+
+on('changeSlotRealTime',  (data) => {
+  
+})
 
 
 --API Cart 
@@ -78,3 +98,18 @@ link web : https://nailapimanager.herokuapp.com
 @api/cart/updateCart
   header : x-auth-token
   method : POST
+  param : {
+    idService
+  }
+
+@api/cart/deleteProductInCart
+  header : x-auth-token
+  method : POST
+  param : {
+    idService
+  }
+
+  --API Service 
+@api/service/getAllServices
+  header : x-auth-token
+  method : GET
