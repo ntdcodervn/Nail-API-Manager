@@ -225,6 +225,8 @@ router.post('/booking', auth, [
 router.get('/getAllBook', auth, [
     check('page', 'Page is not empty').not().isEmpty(),
     check('page', 'Page is number').isNumeric(),
+    check('status', 'Status is not empty').not().isEmpty(),
+    check('status', 'Status is number').isNumeric()
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -234,7 +236,7 @@ router.get('/getAllBook', auth, [
         });
     }
     try {
-        const page = req.query.page;
+        const {page,status} = req.query;
         if (page < 0) {
             return res.json({
                 errors: [{
@@ -243,7 +245,7 @@ router.get('/getAllBook', auth, [
             });
         }
 
-        let getAllBook = await booking.find({status : page})
+        let getAllBook = await booking.find({status : status})
             .populate('users', ['email', 'name', 'coupons', 'point', 'avatar'])
             .populate('services')
             .populate('slots').limit(10).skip(10 * page).exec();
