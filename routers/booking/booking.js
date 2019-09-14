@@ -244,14 +244,11 @@ router.get('/getAllBook', auth, [
                 }]
             });
         }
+
         let getAllBook = await booking.find({status : status})
             .populate('users', ['email', 'name', 'coupons', 'point', 'avatar'])
             .populate('services')
             .populate('slots').limit(10).skip(10 * page).exec();
-        pulate('slots').limit(10).skip(10 * page).exec();
-   
-
-        
         res.json({
             listBooking: getAllBook
         });
