@@ -430,7 +430,9 @@ router.get('/getNewPassword', [
       let newPassword = randomstring.generate(7);
       var salt = await bcrypt.genSaltSync(10);
       var hashPass = await bcrypt.hashSync(newPassword, salt);
-      let changePassword = await USER.findByIdAndUpdate(getDataUser._id,{password :hashPass});
+      let changePassword = await USER.findByIdAndUpdate(getDataUser._id, {
+        password: hashPass
+      });
       const request = mailjet
         .post("send", {
           'version': 'v3.1'
@@ -463,7 +465,7 @@ router.get('/getNewPassword', [
             msg: 'Sent Password Failed !'
           });
         })
-    }else {
+    } else {
       res.status(201).json({
         msg: 'Email not found !'
       });
@@ -475,6 +477,28 @@ router.get('/getNewPassword', [
       msg: 'Server error'
     });
   }
+})
+
+router.post('/changePassword', auth, [
+  check('newPassword', 'Password is not empty').not().isEmpty()
+], async (req, res) => {
+  try {
+    let userCheck = await USER.findById(req.id);
+    if (!bcrypt.compareSync(newPassword, userCheck.password)) {
+      return res.status(202).json({
+        msg: 'Wrong password, please check again'
+      });
+    }
+
+    res.status(200).json({
+      msg: 'Change password successful'
+    });
+  } catch (error) {
+    res.status(501).json({
+      msg: 'Server error'
+    });
+  }
+
 })
 
 
