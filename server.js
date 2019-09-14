@@ -3,13 +3,15 @@ const app = express();
 const connectDB = require('./config/db');
 const bodyParser = require('body-parser')
 const path = require('path');
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 4000;
+
 
 app.listen(PORT , () => console.log('Server is start in PORT ' + PORT))
 connectDB();
 app.use(bodyParser.json());
-app.use('/', express.static(path.join(__dirname, 'public')))
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads/file', express.static(path.join(__dirname, 'uploads/file')));
 
 //define Router
 app.use('/api/users', require('./routers/users/users'));
