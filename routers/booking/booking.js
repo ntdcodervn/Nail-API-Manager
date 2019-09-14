@@ -244,11 +244,22 @@ router.get('/getAllBook', auth, [
                 }]
             });
         }
-
-        let getAllBook = await booking.find({status : status})
+        let getAllBook= [];
+        if(status === 0)
+        {
+            getAllBook = await booking.find({status : status})
             .populate('users', ['email', 'name', 'coupons', 'point', 'avatar'])
             .populate('services')
             .populate('slots').limit(10).skip(10 * page).exec();
+        }
+        else {
+            getAllBook = await booking.find({})
+            .populate('users', ['email', 'name', 'coupons', 'point', 'avatar'])
+            .populate('services')
+            .populate('slots').limit(10).skip(10 * page).exec();
+        }
+
+        
         res.json({
             listBooking: getAllBook
         });
