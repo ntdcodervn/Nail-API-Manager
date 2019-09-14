@@ -256,11 +256,20 @@ router.get('/getAllBook', auth, [
     }
 })
 
-router.get('/getBooked', auth, async (req, res) => {
+router.get('/getBooked', auth,[
+    check('page', 'Page is not empty').not().isEmpty(),
+    check('page', 'Page is number').isNumeric(),
+  ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+     
+      return res.json({ errors: errors.array() });
+    }
     try {
+        let page = req.query.page;
         let booked = await booking.find({
             users: req.id
-        }).populate('services').populate('slots', ['slotName']);
+        }).populate('services').populate('slots', ['slotName']).limit(10).skip(10 * page);
 
         res.json({
             booked
