@@ -7,6 +7,8 @@ const { writeFileSync } = require('fs')
 const ics = require('ics')
 const nodemailer = require('nodemailer');
 const path = require('path');
+const mailjet = require ('node-mailjet')
+.connect('b49983dc200e0ed41032b4019f3f3059', '7d324639b1b0eb8fa17dd78c85f5059c')
 
 router.post('/changeStatusBooking',auth,[
     check('idBooking','Id booking is not empty').not().isEmpty(),
@@ -75,30 +77,37 @@ router.post('/exportCalendar',
                 }
                 console.log(value);
                 writeFileSync(path.join(__dirname, './../../uploads/file/event.ics'),value);
-                let transporter = nodemailer.createTransport({
-                    service : 'gmail',
-                    auth: {
-                      user : 'thanhduy24719991@gmail.com',
-                      pass : 'denna247'
-                    }
-                  });
-                  console.log(emailTo)
-                  let mailOptions ={
-                    from : 'denna24719999@gmail.com',
-                    to: emailTo,
-                    subject: 'Send File Google calendar file',
-                    text: 'Google calendar file path .ics',
-                    html: 'Link dowload Google calendar <a href="https://nailapimanager.herokuapp.com/uploads/file/event.ics">Dowload file calendar service</a>'
-                  }
-                  
-                  transporter.sendMail(mailOptions, (err, data) => {
-                    if(err) {
-                      console.log('Error Occurd', err);
-                      res.status(202).json({msg:'Sent mail falied !'});
-                    }else {
-                      console.log('Email sent!!!!');
-                    }
-                  })
+                const request = mailjet
+.post("send", {'version': 'v3.1'})
+.request({
+  "Messages":[
+    {
+      "From": {
+        "Email": "ntd.codervn@gmail.com",
+        "Name": "Duy"
+      },
+      "To": [
+        {
+          "Email": emailTo,
+        }
+      ],
+      "Subject": "Send ics file.",
+      "TextPart": "Sending ics file dowload",
+      "HTMLPart": "<h3>Link dowload <a href='https://nailapimanager.herokuapp.com/uploads/file/event.ics'>Google calendar file</a></h3>",
+      "CustomID": "AppGettingStartedTest"
+    }
+  ]
+})
+request
+  .then((result) => {
+    console.log(result.body);
+    res.status(200).json({msg:'Sent mail successfull !'});
+  })
+  .catch((err) => {
+    console.log(err.statusCode);
+    res.status(202).json({msg:'Sent mail successfull !'});
+  })
+
                   res.status(200).json({msg:'Sent mail successfull !'});
             })
            
