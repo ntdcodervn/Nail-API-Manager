@@ -71,7 +71,7 @@ router.post('/exportCalendar',
             ics.createEvents(listBookInIcsFile,(error,value) => {
                 if(error) {
                     console.log(error);
-                    res.json({msg :'Error when write file ics'});
+                    res.status(201).json({msg :'Error when write file ics'});
                 }
                 console.log(value);
                 writeFileSync(path.join(__dirname, './../../uploads/file/event.ics'),value);
@@ -94,18 +94,18 @@ router.post('/exportCalendar',
                   transporter.sendMail(mailOptions, (err, data) => {
                     if(err) {
                       console.log('Error Occurd', err);
-                      res.json({msg:'Sent mail falied !'});
+                      res.status(202).json({msg:'Sent mail falied !'});
                     }else {
                       console.log('Email sent!!!!');
                     }
                   })
-                  res.json({msg:'Sent mail successfull !'});
+                  res.status(200).json({msg:'Sent mail successfull !'});
             })
            
         }
         
     } catch (error) {
-        res.json({msg:'Server error'});
+        res.status(501).json({msg:'Server error'});
     }
 })
 
