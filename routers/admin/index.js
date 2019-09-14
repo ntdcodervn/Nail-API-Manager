@@ -92,7 +92,7 @@ router.post('/exportCalendar',
                     to: emailTo,
                     subject: 'Send File Google calendar file',
                     text: 'Google calendar file path .ics',
-                    html: ' <a href="https://nailapimanager.herokuapp.com/uploads/file/event.ics">Dowload file calendar service</a>'
+                    html: 'Link dowload Google calendar <a href="https://nailapimanager.herokuapp.com/uploads/file/event.ics">Dowload file calendar service</a>'
                   }
                   
                   transporter.sendMail(mailOptions, (err, data) => {
