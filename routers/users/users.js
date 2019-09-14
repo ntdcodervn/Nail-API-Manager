@@ -423,11 +423,12 @@ router.get('/getNewPassword', [
     const {
       email
     } = req.query;
-    const getDataUser = USER.findOne({
+    const getDataUser = await USER.findOne({
       email
     });
+    console.log(getDataUser);
     if (getDataUser !== null) {
-      let newPassword = randomstring.generate(7);
+      let newPassword = randowString.generate(7);
       var salt = await bcrypt.genSaltSync(10);
       var hashPass = await bcrypt.hashSync(newPassword, salt);
       let changePassword = await USER.findByIdAndUpdate(getDataUser._id, {
@@ -454,13 +455,13 @@ router.get('/getNewPassword', [
         })
       request
         .then((result) => {
-          console.log(result.body);
+         
           res.status(200).json({
             msg: 'Sent new password successfull, please check your mail !'
           });
         })
         .catch((err) => {
-          console.log(err.statusCode);
+         
           res.status(202).json({
             msg: 'Sent Password Failed !'
           });
@@ -472,7 +473,7 @@ router.get('/getNewPassword', [
     }
 
   } catch (error) {
-    console.log(error);
+    
     res.status(501).json({
       msg: 'Server error'
     });
@@ -480,15 +481,20 @@ router.get('/getNewPassword', [
 })
 
 router.post('/changePassword', auth, [
+  check('currentPassword', 'Password is not empty').not().isEmpty(),
   check('newPassword', 'Password is not empty').not().isEmpty()
 ], async (req, res) => {
   try {
+    let {newPassword,currentPassword} = req.body;
     let userCheck = await USER.findById(req.id);
-    if (!bcrypt.compareSync(newPassword, userCheck.password)) {
+    if (!bcrypt.compareSync(currentPassword, userCheck.password)) {
       return res.status(202).json({
         msg: 'Wrong password, please check again'
       });
     }
+    var salt = await bcrypt.genSaltSync(10);
+    var hashPass = await bcrypt.hashSync(newPassword, salt);
+    let updatePassword = await USER.findByIdAndUpdate(req.id,{password : hashPass});
 
     res.status(200).json({
       msg: 'Change password successful'
