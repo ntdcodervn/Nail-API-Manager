@@ -19,23 +19,19 @@ router.post('/changeStatusBooking',auth,[
         return res.json({ errors: errors.array() });
       }
     try {
-        if(req.role === 'admin')
-        {
+       
             let {idBooking,status} = req.body;
             let updateStatusBooking = await booking.findByIdAndUpdate(idBooking,{status});
             if(updateStatusBooking !== null)
             {
-                res.json({msg : 'Update successfull'});
+                res.status(200).json({msg : 'Update successfull'});
             }
             else 
             {
-                res.json({msg : 'Update failed'})
+                res.status(201).json({msg : 'Update failed'})
             }
            
-        }
-        else {
-            res.json({msg : 'You do not have access to this API'});
-        }
+       
         
 
         
