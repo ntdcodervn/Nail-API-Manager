@@ -281,7 +281,7 @@ router.get('/getDataUser', auth , async (req,res) => {
 })
 
 /*
-    @api/users/getDataUser
+    @api/users/getAllUser
 */
 router.get('/getAllUser', auth,[
   check('page', 'Page is not empty').not().isEmpty(),
@@ -303,7 +303,7 @@ router.get('/getAllUser', auth,[
    
     if(req.role === 'admin')
     {
-      let AllUser = await USER.find().sort({point : -1}).select('-password');
+      let AllUser = await USER.find().sort({point : -1}).limit(10).skip(10 * page).select('-password');
       res.json({listUser : AllUser});
     }else{
       res.json({msg : 'You do not have access to this API'});

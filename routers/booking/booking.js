@@ -246,7 +246,7 @@ router.get('/getAllBook', auth, [
         let getAllBook = await booking.find({status : page})
             .populate('users', ['email', 'name', 'coupons', 'point', 'avatar'])
             .populate('services')
-            // .populate('slots').limit(10).skip(10 * page).exec();
+            .populate('slots').limit(10).skip(10 * page).exec();
         res.json({
             listBooking: getAllBook
         });
