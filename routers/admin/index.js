@@ -78,7 +78,7 @@ router.post('/exportCalendar',
                 let transporter = nodemailer.createTransport({
                     service : 'gmail',
                     auth: {
-                      user : 'denna247199991@outlook.com',
+                      user : 'thanhduy24719991@gmail.com',
                       pass : 'denna247'
                     }
                   });
